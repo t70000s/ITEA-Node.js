@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Вычисление минимума</title>
+
+    <script>
+        window.onload = function () {
+            const input = document.getElementById('input');
+            const submit = document.getElementById('submit');
+            const output = document.getElementById('output');
+            const searchValue = function () {
+                output.innerText = '';
+                if (!input.value) return;
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', '/calc/min');
+                xhr.onload = function () {
+                    output.innerHTML = this.responseText;
+                };
+                xhr.onerror = (err) => console.log(err);
+                xhr.send(input.value);
+            };
+            submit.addEventListener('click', searchValue);
+        };
+    </script>
+</head>
+<body>
+    <h1>Найти минимум из массива чисел</h1>
+    <form>
+        <label>Введите числа: </label>
+        <input type="text" id="input">
+        <button type="button" id="submit">Рассчитать</button>
+        <p>Результат:
+            <mark id="output"></mark>
+        </p>
+    </form>
+</body>
+</html>

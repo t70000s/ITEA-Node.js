@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Вычисление минимума</title>
+
+    <script>
+        window.onload = function () {
+            const input = document.getElementById('input');
+            const submit = document.getElementById('submit');
+            const output = document.getElementById('output');
+            const searchValue = function () {
+                output.innerText = '';
+                if (!input.value) return;
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', '/calc/min');
+                xhr.onload = function () {
+                    output.innerHTML = this.responseText;
+                };
+                xhr.onerror = (err) => console.log(err);
+                xhr.send(input.value);
+            };
+            submit.addEventListener('click', searchValue);
+
+
+            const filesSubmit = document.getElementById('filesSubmit');
+            const filesOutput = document.getElementById('filesOutput');
+            const getFiles = function () {
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', '/files');
+                xhr.onload = function () {
+                    const data = JSON.parse(this.responseText);
+                    let result = '';
+                    if (data && data.length) {
+                        data.forEach((i) => result += `${i}\r\n`)
+                    }
+                    filesOutput.innerHTML = result;
+                    filesSubmit.remove();
+                };
+                xhr.onerror = (err) => console.log(err);
+                xhr.send();
+            };
+            filesSubmit.addEventListener('click', getFiles);
+        };
+    </script>
+</head>
+<body>
+    <h1>Найти минимум из массива чисел</h1>
+    <form>
+        <label>Введите числа: </label>
+        <input type="text" id="input">
+        <button type="button" id="submit">Рассчитать</button>
+        <p>Результат:
+            <mark id="output"></mark>
+        </p>
+    </form>
+    <br><br><br>
+    <h1>File explorer</h1>
+    <form>
+        <button type="button" id="filesSubmit">Показать все файлы</button>
+        <pre id="filesOutput"></pre>
+    </form>
+</body>
+</html>

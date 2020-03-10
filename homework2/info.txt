@@ -1,0 +1,7 @@
+npm unpublish @t70000s/math --force
+npm install @t70000s/math
+npm init
+npm publish --access=public
+
+npm uninstall @t70000s/math
+npm uninstall @t70000s/math -g
